@@ -1,0 +1,164 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% extends 'base.html' %}
+{% block title %} ZenBlog - {{ post.title | title }} {% endblock %}
+{% block content %}
+  <main id="main">
+
+    <section class="single-post-content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9 post-content" data-aos="fade-up">
+
+            <!-- ======= Single Post Content ======= -->
+            <div class="single-post">
+              <div class="post-meta">
+                <div class="mb-4">
+                  <span class="mx-1 mb-2">&bullet;</span> <span>{{ post.date }}</span>
+                </div>
+                <img src="{{ post.img_url }}" alt="" class="img-fluid">
+                <h6 class="mt-3 text-lowercase">{{ post.subtitle }}</h6>
+              </div>
+              <h1 class="mb-5">{{ post.title | title }}</h1>
+              <p>
+                  {{ post.body | safe }}
+              </p>
+
+            <!-- ======= Comments ======= -->
+            <!--TODO: fix the comment and allow users comment -->
+            <div class="comments">
+              <h5 class="comment-title py-4">
+              {% if length < 2: %}
+                {{ length }} Comment
+              {% else: %}
+                {{ length }} Comments
+              {% endif %}
+              </h5>
+              {% for comment in post.post_comments %}
+              <div class="comment d-flex mb-4">
+                <div class="flex-shrink-0">
+                  <div class="avatar avatar-sm rounded-circle">
+                    <img class="avatar-img" src="assets/img/person-5.jpg" alt="" class="img-fluid">
+                  </div>
+                </div>
+                <div class="flex-grow-1 ms-2 ms-sm-3">
+                  <div class="comment-meta d-flex align-items-baseline">
+                    <h6 class="me-2">{{ comment.user.username }}</h6>
+                    <!-- TODO: Add how many days or minutes ago comment was made -->
+                    <span class="text-muted">2d</span>
+                  </div>
+                  <div class="comment-body">
+                      {{ comment.text|safe }}
+                  </div>
+
+<!--                  <div class="comment-replies bg-light p-3 mt-3 rounded">-->
+<!--                    <h6 class="comment-replies-title mb-4 text-muted text-uppercase">2 replies</h6>-->
+
+<!--                    <div class="reply d-flex mb-4">-->
+<!--                      <div class="flex-shrink-0">-->
+<!--                        <div class="avatar avatar-sm rounded-circle">-->
+<!--                          <img class="avatar-img" src="assets/img/person-4.jpg" alt="" class="img-fluid">-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div class="flex-grow-1 ms-2 ms-sm-3">-->
+<!--                        <div class="reply-meta d-flex align-items-baseline">-->
+<!--                          <h6 class="mb-0 me-2">Brandon Smith</h6>-->
+<!--                          <span class="text-muted">2d</span>-->
+<!--                        </div>-->
+<!--                        <div class="reply-body">-->
+<!--                          Lorem ipsum dolor sit, amet consectetur adipisicing elit.-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div class="reply d-flex">-->
+<!--                      <div class="flex-shrink-0">-->
+<!--                        <div class="avatar avatar-sm rounded-circle">-->
+<!--                          <img class="avatar-img" src="assets/img/person-3.jpg" alt="" class="img-fluid">-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                      <div class="flex-grow-1 ms-2 ms-sm-3">-->
+<!--                        <div class="reply-meta d-flex align-items-baseline">-->
+<!--                          <h6 class="mb-0 me-2">James Parsons</h6>-->
+<!--                          <span class="text-muted">1d</span>-->
+<!--                        </div>-->
+<!--                        <div class="reply-body">-->
+<!--                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio dolore sed eos sapiente, praesentium.-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+
+                </div>
+              </div>
+              {% endfor %}
+
+            </div><!-- End Comments -->
+
+            <!-- ======= Comments Form ======= -->
+            <div class="row justify-content-center my-5">
+
+              <div class="col-lg-12">
+                <h5 class="comment-title">Leave a Comment</h5>
+                <div class="row">
+
+                  <div class="col-12 mb-3">
+                    {{ ckeditor.load() }} {{ ckeditor.config(name="comment") }}
+                    {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                  </div>
+
+                </div>
+              </div>
+            </div><!-- End Comments Form -->
+
+          </div>
+
+
+        </div>
+
+          <div class="col-md-3">
+            <!-- ======= Sidebar ======= -->
+            <div class="aside-block">
+
+              <ul class="nav nav-pills custom-tab-nav mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="pills-trending-tab" data-bs-toggle="pill" data-bs-target="#pills-trending" type="button" role="tab" aria-controls="pills-trending" aria-selected="false">Latest</button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pills-tabContent">
+
+                <!-- latest -->
+                <div class="tab-pane fade show active" id="pills-popular" role="tabpanel" aria-labelledby="pills-popular-tab">
+                  {% for post in all_posts: %}
+                    <div class="post-entry-1 border-bottom">
+                      <div class="post-meta">
+                        <span>{{ post.date }}</span>
+                      </div>
+                      <h2 class="mb-2">
+                        <a href="{{ url_for('blog_bp.single_post', post_id=post.id) }}">
+                          {{ post.title | title }}</a>
+                      </h2>
+                      <span class="author mb-3 d-block">{{ post.author.username }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <div class="aside-block">
+              <h3 class="aside-title">Video</h3>
+              <div class="video-post">
+                <a href="https://www.youtube.com/watch?v=AiFfDjmd0jU" class="glightbox link-video">
+                  <span class="bi-play-fill"></span>
+                  <img src="https://images.unsplash.com/photo-1688728380093-d9e2a6df2c5c?q=80&w=1784&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" class="img-fluid">
+                </a>
+              </div>
+            </div><!-- End Video -->
+           </div>
+
+          </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+{% endblock %}

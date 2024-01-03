@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+  <main id="main">
+
+    <!-- ======= Hero Slider Section ======= -->
+    <section id="hero-slider" class="hero-slider">
+      <div class="container-md" data-aos="fade-in">
+        <div class="row">
+          <div class="col-12">
+            <div class="swiper sliderFeaturedPosts">
+              <div class="swiper-wrapper">
+
+                {% for post in all_posts[:2] %}
+                <div class="swiper-slide">
+                  <a class="img-bg d-flex align-items-end" style="background-image: url({{ post.img_url }})" href="{{ url_for('blog_bp.single_post', post_id=post.id) }}">
+                    <div class="img-bg-inner">
+                      <h2>{{ post.title | title }}</h2>
+                      <p>{{ post.subtitle }}</p>
+                    </div>
+                  </a>
+                </div>
+                {% endfor %}
+
+                <div class="custom-swiper-button-next">
+                  <span class="bi-chevron-right"></span>
+                </div>
+                <div class="custom-swiper-button-prev">
+                  <span class="bi-chevron-left"></span>
+                </div>
+
+                <div class="swiper-pagination"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Hero Slider Section -->
+
+    <!-- ======= Post Grid Section ======= -->
+    <section id="posts" class="posts">
+      <div class="container" data-aos="fade-up">
+        <div class="row g-5">
+
+          <div class="col-lg-4">
+            {% for new_post in all_posts[::-1][:1] %}
+            <div class="post-entry-1 lg">
+              <a href="{{ url_for('blog_bp.single_post', post_id=new_post.id) }}">
+                <img src="{{ new_post.img_url }}" alt="" class="img-fluid">
+              </a>
+              <div class="post-meta">
+                <span class="mx-1">&bullet;</span> <span>{{ new_post.date }}</span>
+              </div>
+              <h2><a href="{{ url_for('blog_bp.single_post', post_id=new_post.id) }}">{{ new_post.title | upper }}</a></h2>
+
+              <div class="d-flex align-items-center author">
+                <!-- TODO NOTE: use profile picture if available -->
+                <!-- <div class="photo"><img src="assets/img/person-1.jpg" alt="" class="img-fluid"></div> -->
+                <div class="name">
+                  <h5 class="m-0 p-0">@{{ new_post.author.username }}</h5>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="col-lg-8">
+
+            <div class="row g-5">
+              <div class="col-lg-6 border-start custom-border">
+
+              {% for post in all_posts[:3]: %}
+                <div class="post-entry-1">
+                  <a href="{{ url_for('blog_bp.single_post', post_id=post.id) }}">
+                    <img src="{{ post.img_url }}" alt="" class="img-fluid">
+                  </a>
+                  <div class="post-meta">
+                    <span class="mx-1">&bullet;</span> <span>{{ post.date }}</span>
+                  </div>
+                  <h2>
+                    <a href="{{ url_for('blog_bp.single_post', post_id=post.id) }}">
+                      {{ post.title | title }}
+                    </a>
+                  </h2>
+                </div>
+              {% endfor %}
+
+               <div class="create-post mt-5 text-left">
+                  <a type="button" class="btn btn-sm btn-primary" href="{{ url_for('blog_bp.get_all_posts') }}">
+                    See More
+                  </a>
+                </div>
+              </div>
+
+              <!-- Trending Section -->
+              <div class="col-lg-6">
+
+                <div class="trending">
+                  <h3>Trending</h3>
+                  <ul class="trending-post">
+
+                    {% for i in range(rank): %}
+                    <li>
+                      <a href="{{ url_for('blog_bp.single_post', post_id=top_posts[i].id) }}">
+                        <span class="number">{{ i + 1 }}</span>
+                        <h3>{{ top_posts[i].title | title }}</h3>
+                        <span class="author">{{ top_posts[i].author.username }}</span>
+                      </a>
+                    </li>
+                    {% endfor %}
+
+                  </ul>
+                </div>
+
+              </div> <!-- End Trending Section -->
+            </div>
+          </div>
+
+          {% if current_user.is_authenticated: %}
+          <div class="create-post mt-5 text-center">
+            <a type="button" class="btn btn-lg btn-primary" href="{{ url_for('blog_bp.add_new_post') }}">Create New Post</a>
+          </div>
+          {% endif %}
+
+        </div> <!-- End .row -->
+      </div>
+    </section> <!-- End Post Grid Section -->
+
+  </main><!-- End #main -->
+{% endblock %}
