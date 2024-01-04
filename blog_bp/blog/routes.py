@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from flask_login import current_user, login_required
-from flask_gravatar import Gravatar
 from datetime import date
 from ..forms import CreatePostForm, CommentForm
 from ..models import BlogPost, Comment
@@ -11,15 +10,6 @@ blog = Blueprint(
     'blog_bp', __name__, template_folder='templates'
 )
 
-gravatar = Gravatar(blog,
-                    size=100,
-                    rating='g',
-                    default='retro',
-                    force_default=False,
-                    force_lower=False,
-                    use_ssl=False,
-                    base_url=None)
-
 
 # todo: display all blog post and involve pagination and current_user
 @blog.route('/all')
@@ -29,7 +19,6 @@ def get_all_posts():
 
 
 @blog.route('/<int:post_id>', methods=["GET", "POST"])
-@login_required
 def single_post(post_id):
     form = CommentForm()
     post = db.get_or_404(BlogPost, post_id)
@@ -48,7 +37,12 @@ def single_post(post_id):
         return redirect(request.url)
 
     return render_template(
-        'post.html', post=post, length=len(post.post_comments), all_posts=posts[::-1][:5], form=form, current_user=current_user)
+        'post.html',
+        post=post,
+        length=len(post.post_comments),
+        all_posts=posts[::-1][:5], form=form,
+        current_user=current_user
+    )
 
 
 @blog.route('/new', methods=["GET", "POST"])

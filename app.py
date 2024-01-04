@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap5
 from blog_bp.extensions import db, login_manager
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
-from flask_gravatar import Gravatar
 import os
 
 # BLUEPRINTS
