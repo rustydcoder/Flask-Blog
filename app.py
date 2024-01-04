@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap5
 from blog_bp.extensions import db, login_manager
 from dotenv import load_dotenv
 from flask_ckeditor import CKEditor
-from flask_gravatar import Gravatar
 import os
 
 # BLUEPRINTS
@@ -17,7 +16,7 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DB_URI")
 db.init_app(app)
 login_manager.init_app(app)
 

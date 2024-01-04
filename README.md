@@ -10,8 +10,8 @@ their identity and read about possible solutions to internal problems.
 2. Finding html template or code one - [template from here](https://bootstrapmade.com/zenblog-bootstrap-blog-template/)
 3. Edit the template to fit your need
 
-| Route             | Template      | Redirect to | Methods   |
-| ----------------- | ------------- | -----------  | --------  |
+| Route             | Template      | Redirect to  | Methods   |
+| ----------------- | ------------- |--------------| --------  |
 | /                 | index.html    | None         | GET       |
 | /register         | register.html | /            | GET, POST |
 | /login            | login.html    | /            | GET, POST |
@@ -21,6 +21,6 @@ their identity and read about possible solutions to internal problems.
 | /blog/all         |               |              | GET       |
 | /blog/new         | make-post.html| /            | GET, POST |
 | /blog/<id>        | post.html     | /login or /# | GET, POST |
-| /blog/edit/<id>   | make-post.html| /blog/<id>   | GET, POST |
-| /blog/delete/<id> | ------------- | /blog/all    | GET       |
+| /blog/edit/<id>   | make-post.html| /post/<id>   | GET, POST |
+| /blog/delete/<id> | ------------- | /post/all    | GET       |
 **NB:** # means the same route
